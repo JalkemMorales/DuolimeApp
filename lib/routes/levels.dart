@@ -50,75 +50,141 @@ class CardListState extends State<Levels> {
 
   @override
   Widget build(BuildContext context) {
+    // Mapa que define los colores según la categoría
+    final Map<String, Map<String, Color>> categoryColors = {
+      'Banderas': {
+        'background': const Color.fromARGB(255, 255, 186, 181),
+        'button': Colors.red,
+      },
+      'Series': {
+        'background': const Color.fromARGB(255, 255, 220, 167),
+        'button': Colors.orange,
+      },
+      'Películas': {
+        'background': const Color.fromARGB(255, 255, 242, 182),
+        'button': const Color.fromARGB(255, 255, 208, 0),
+      },
+      'Cultura pop': {
+        'background': const Color.fromARGB(255, 221, 255, 210),
+        'button': const Color.fromARGB(255, 110, 197, 83),
+      },
+      'Historia': {
+        'background': const Color.fromARGB(255, 157, 255, 170),
+        'button': const Color.fromARGB(255, 38, 180, 57),
+      },
+      'Arte': {
+        'background': const Color.fromARGB(255, 193, 255, 249),
+        'button': Colors.teal,
+      },
+      'Geografía': {
+        'background': const Color.fromARGB(255, 179, 221, 255),
+        'button': Colors.blue,
+      },
+      'Anime': {
+        'background': const Color.fromARGB(255, 180, 221, 255),
+        'button': const Color.fromARGB(255, 11, 102, 177),
+      },
+      'Ciencia': {
+        'background': const Color.fromARGB(255, 231, 196, 255),
+        'button': const Color.fromARGB(255, 192, 96, 255),
+      },
+      'Libros': {
+        'background': Colors.purple.shade100,
+        'button': Colors.purple,
+      },
+      'Videojuegos': {
+        'background': const Color.fromARGB(255, 255, 207, 239),
+        'button': const Color.fromARGB(255, 255, 128, 213),
+      },
+      'Música': {
+        'background': const Color.fromARGB(255, 255, 183, 225),
+        'button': const Color.fromARGB(255, 255, 0, 149),
+      },
+      // Agrega más categorías si es necesario
+    };
+
+    // Obtén los colores según la categoría actual
+    final String currentCategory = args['category'] ?? 'Default';
+    final Map<String, Color> colors =
+        categoryColors[currentCategory] ?? {
+          'background': Colors.grey.shade100,
+          'button': Colors.grey.shade700,
+        };
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("${args['category']}"),
+        title: Text("$currentCategory",style: const TextStyle(color: Colors.white),),
+        backgroundColor: colors['button'], // Cambia el color del AppBar
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Última puntuación:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  puntaje.returnPuntaje().toString(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
+      body: Container(
+        color: colors['background'], // Fondo según la categoría
+        child: Column(
+          children: [
+            Padding(
               padding: const EdgeInsets.all(16.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Dos columnas
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 2.0, // Proporción de las tarjetas
-              ),
-              itemCount: 10, // Mostrar 10 tarjetas
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/trivia', arguments: {
-                                            'category': "${args['category']}",
-                                          });
-                  },
-                  child: Card(
-                    elevation: 4,
-                    color: Colors.blueAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Última puntuación:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Center(
-                      child: Text(
-                        'Nivel ${index + 1}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                  ),
+                  Text(
+                    puntaje.returnPuntaje().toString(),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: colors['button'], // Color del texto dinámico
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Dos columnas
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: 2.0, // Proporción de las tarjetas
+                ),
+                itemCount: 10, // Mostrar 10 tarjetas
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/trivia', arguments: {
+                        'category': currentCategory,
+                      });
+                    },
+                    child: Card(
+                      elevation: 4,
+                      color: colors['button'], // Color dinámico del botón
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Nivel ${index + 1}',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
 }

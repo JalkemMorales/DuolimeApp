@@ -48,7 +48,25 @@ class CardListState extends State<Categories> {
 
   @override
   Widget build(BuildContext context) {
+    // Lista de colores para las categorías
+    final List<Color> categoryColors = [
+      Colors.red,
+      Colors.orange,
+      const Color.fromARGB(255, 255, 208, 0),
+      const Color.fromARGB(255, 110, 197, 83),
+      const Color.fromARGB(255, 38, 180, 57),
+      Colors.teal,
+      Colors.blue,
+      const Color.fromARGB(255, 11, 102, 177),
+      const Color.fromARGB(255, 192, 96, 255),
+      Colors.purple,
+      const Color.fromARGB(255, 255, 128, 213),
+      const Color.fromARGB(255, 255, 0, 149),
+    ];
+
     return Scaffold(
+      // Fondo morado para la pantalla completa
+      backgroundColor: const Color.fromARGB(255, 178, 133, 255),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: _isLoading
@@ -57,13 +75,15 @@ class CardListState extends State<Categories> {
                 children: [
                   Column(
                     children: [
+                      const SizedBox(height: 40.0),
                       const Padding(
                         padding: EdgeInsets.only(bottom: 16.0),
                         child: Text(
-                          "Categorias",
+                          "Categorías",
                           style: TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.bold,
+                            color: Colors.white, // Texto en blanco
                           ),
                         ),
                       ),
@@ -71,10 +91,14 @@ class CardListState extends State<Categories> {
                         child: ListView.builder(
                             itemCount: categories.obtainLength(),
                             itemBuilder: (context, index) {
+                              // Asigna un color según el índice, usando un ciclo
+                              final color = categoryColors[index % categoryColors.length];
+                              
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 2),
                                 child: Card(
+                                  color: color, // Fondo del Card con el color asignado
                                   clipBehavior: Clip.hardEdge,
                                   child: InkWell(
                                     splashColor: Colors.blue.withAlpha(30),
@@ -85,9 +109,8 @@ class CardListState extends State<Categories> {
                                           });
                                     },
                                     child: SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                            1,
+                                      width: MediaQuery.of(context).size.height *
+                                          1,
                                       height: 150,
                                       child: Row(
                                         mainAxisAlignment:
@@ -99,20 +122,11 @@ class CardListState extends State<Categories> {
                                             child: Text(
                                               categories.getNombre(index),
                                               style: const TextStyle(
-                                                  fontSize: 25.0,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                fontSize: 25.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white, // Texto en blanco
+                                              ),
                                             ),
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8.0,
-                                                horizontal: 30.0),
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8.0,
-                                                horizontal: 30.0),
                                           ),
                                         ],
                                       ),
@@ -129,4 +143,5 @@ class CardListState extends State<Categories> {
       ),
     );
   }
+
 }
