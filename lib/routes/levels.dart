@@ -92,7 +92,9 @@ class CardListState extends State<Levels> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/trivia');
+                    Navigator.pushNamed(context, '/trivia', arguments: {
+                                            'category': "${args['category']}",
+                                          });
                   },
                   child: Card(
                     elevation: 4,

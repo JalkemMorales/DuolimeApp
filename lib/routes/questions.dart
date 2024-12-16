@@ -1,3 +1,4 @@
+import 'package:duolime/handlers/trivia.dart';
 import 'package:flutter/material.dart';
 
 class Trivia extends StatefulWidget {
@@ -9,7 +10,8 @@ class Trivia extends StatefulWidget {
 
 class CardListState extends State<Trivia> {
   List<Map<String, String>> _questions = []; // Lista de preguntas simulada
-  late Trivia preguntas;
+  late Map<String, String> args;
+  late TriviaQuestions preguntas;
   int _currentQuestionIndex = 0;
   bool _isLastQuestion = false;
   bool _isLoading = true;
@@ -18,7 +20,7 @@ class CardListState extends State<Trivia> {
   @override
   void initState() {
     super.initState();
-    preguntas = const Trivia();
+    preguntas = TriviaQuestions();
     _fetchQuestions(); // Simula la llamada a la API
   }
 
@@ -31,6 +33,7 @@ class CardListState extends State<Trivia> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     if (_isLoading) {
       obtainData();
     }
@@ -39,7 +42,6 @@ class CardListState extends State<Trivia> {
   Future<void> obtainData() async {
     debugPrint(_isDisposed.toString());
     if (!_isDisposed) {
-      await preguntas.fetchQuestions();
       if (!_isDisposed) {
         setState(() {
           _isLoading = false;
@@ -51,35 +53,9 @@ class CardListState extends State<Trivia> {
   Future<void> _fetchQuestions() async {
     // Simulación de la respuesta de la API
     await Future.delayed(const Duration(seconds: 2)); // Simula tiempo de carga
-
+    await preguntas.fetchQuestions("${args['category']}");
     setState(() {
-      _questions = [
-        {'pregunta': 'La Tierra es plana', 'respuesta': 'F'},
-        {'pregunta': 'El Sol gira alrededor de la Tierra', 'respuesta': 'F'},
-        {'pregunta': 'El agua hierve a 100°C', 'respuesta': 'V'},
-        {
-          'pregunta': 'El ser humano puede respirar bajo el agua',
-          'respuesta': 'F'
-        },
-        {'pregunta': 'El alfabeto español tiene 30 letras', 'respuesta': 'F'},
-        {'pregunta': 'El oro es un elemento químico', 'respuesta': 'V'},
-        {
-          'pregunta': 'La electricidad es un tipo de energía renovable',
-          'respuesta': 'V'
-        },
-        {
-          'pregunta': 'El agua es un compuesto formado por hidrógeno y oxígeno',
-          'respuesta': 'V'
-        },
-        {
-          'pregunta': 'La velocidad de la luz es de 300,000 km/s',
-          'respuesta': 'V'
-        },
-        {
-          'pregunta': 'La Mona Lisa fue pintada por Vincent van Gogh',
-          'respuesta': 'F'
-        }
-      ];
+      _questions = preguntas.getQuestions();
     });
   }
 
