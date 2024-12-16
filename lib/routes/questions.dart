@@ -82,6 +82,66 @@ class CardListState extends State<Trivia> {
 
   @override
   Widget build(BuildContext context) {
+  // Definir el color del fondo y el appBar según la categoría
+    String currentCategory = args['category'] ?? 'Default';
+    late Color appBarColor;
+    late List<Color> gradientColors;
+
+    // Cambiar colores según la categoría
+    switch (currentCategory) {
+      case 'Banderas':
+        appBarColor = Colors.red;
+        gradientColors = [const Color.fromARGB(255, 255, 141, 133), const Color.fromARGB(255, 255, 194, 102)];
+        break;
+      case 'Series':
+        appBarColor = Colors.orange;
+        gradientColors = [const Color.fromARGB(255, 255, 194, 102), const Color.fromARGB(255, 252, 234, 156)];
+        break;
+      case 'Películas':
+        appBarColor = const Color.fromARGB(255, 255, 208, 0);
+        gradientColors = [const Color.fromARGB(255, 252, 234, 156), const Color.fromARGB(255, 191, 255, 172)];
+        break;
+      case 'Cultura pop':
+        appBarColor = const Color.fromARGB(255, 110, 197, 83);
+        gradientColors = [const Color.fromARGB(255, 191, 255, 172), const Color.fromARGB(255, 166, 255, 178)];
+        break;
+      case 'Historia':
+        appBarColor = const Color.fromARGB(255, 38, 180, 57);
+        gradientColors = [const Color.fromARGB(255, 166, 255, 178), const Color.fromARGB(255, 171, 231, 225)];
+        break;
+      case 'Arte':
+        appBarColor = Colors.teal;
+        gradientColors = [const Color.fromARGB(255, 154, 211, 205), const Color.fromARGB(255, 175, 219, 255)];
+        break;
+      case 'Geografía':
+        appBarColor = Colors.blue;
+        gradientColors = [const Color.fromARGB(255, 175, 219, 255), const Color.fromARGB(255, 141, 177, 207)];
+        break;
+      case 'Anime':
+        appBarColor = const Color.fromARGB(255, 11, 102, 177);
+        gradientColors = [const Color.fromARGB(255, 141, 177, 207), const Color.fromARGB(255, 216, 168, 248)];
+        break;
+      case 'Ciencia':
+        appBarColor = const Color.fromARGB(255, 192, 96, 255);
+        gradientColors = [const Color.fromARGB(255, 216, 168, 248), const Color.fromARGB(255, 218, 125, 235)];
+        break;
+      case 'Libros':
+        appBarColor = Colors.purple;
+        gradientColors = [const Color.fromARGB(255, 218, 125, 235), const Color.fromARGB(255, 255, 172, 227)];
+        break;
+      case 'Videojuegos':
+        appBarColor = const Color.fromARGB(255, 255, 128, 213);
+        gradientColors = [const Color.fromARGB(255, 255, 172, 227), const Color.fromARGB(255, 255, 129, 203)];
+        break;
+      case 'Música':
+        appBarColor = const Color.fromARGB(255, 255, 0, 149);
+        gradientColors = [const Color.fromARGB(255, 255, 129, 203), const Color.fromARGB(255, 247, 176, 154)];
+        break;
+      default:
+        appBarColor = Colors.purple;
+        gradientColors = [Colors.purple.shade700, Colors.purple.shade400];
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trivia - Preguntas y Respuestas'),
@@ -217,4 +277,6 @@ class CardListState extends State<Trivia> {
       ),
     );
   }
+
+
 }

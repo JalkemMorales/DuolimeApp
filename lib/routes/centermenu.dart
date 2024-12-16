@@ -48,13 +48,27 @@ class MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blue[100], // Fondo degradado
-      appBar: AppBar(
-        title: const Text('Menú Principal'),
-        elevation: 0,
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(
+        'Menú Principal',
+        style: TextStyle(color: Colors.white),
       ),
-      body: Center(
+      elevation: 0,
+      backgroundColor: const Color.fromARGB(255, 160, 106, 255), // Morado oscuro
+    ),
+    body: Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color.fromARGB(255, 178, 133, 255), // Morado claro
+            Color.fromARGB(255, 104, 56, 150), // Morado oscuro
+          ],
+        ),
+      ),
+      child: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -99,7 +113,7 @@ class MenuScreenState extends State<MenuScreen> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.purple,
+                        color: Color.fromARGB(255, 104, 56, 150),
                       ),
                     ),
                   ),
@@ -126,7 +140,7 @@ class MenuScreenState extends State<MenuScreen> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.purple,
+                        color: Color.fromARGB(255, 104, 56, 150),
                       ),
                     ),
                   ),
@@ -136,6 +150,9 @@ class MenuScreenState extends State<MenuScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+
 }

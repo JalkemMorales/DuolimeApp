@@ -60,11 +60,14 @@ class RankingScreen extends State<Ranking> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ranking'),
+        title: const Text('Ranking', style: TextStyle(color: Colors.white)),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.purple, Colors.blue],
+              colors: [
+                const Color.fromARGB(255, 160, 106, 255), // Morado claro
+                const Color.fromARGB(255, 160, 106, 255), // Morado oscuro
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -78,7 +81,10 @@ class RankingScreen extends State<Ranking> {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blueAccent, Colors.purpleAccent],
+                colors: [
+                  Color.fromARGB(255, 178, 133, 255), // Morado claro
+                  Color.fromARGB(255, 104, 56, 150), // Morado oscuro
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -111,7 +117,7 @@ class RankingScreen extends State<Ranking> {
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: ListTile(
                             leading: CircleAvatar(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: Color.fromARGB(255, 151, 88, 151),
                               child: Text(
                                 jugador['id'].toString(),
                                 style: const TextStyle(color: Colors.white),
@@ -121,14 +127,14 @@ class RankingScreen extends State<Ranking> {
                               jugador['nombre'],
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.purple,
+                                color: Color.fromARGB(255, 104, 56, 150),
                                 fontSize: 18,
                               ),
                             ),
                             trailing: Container(
                               padding: const EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
-                                color: Colors.purpleAccent,
+                                color: Color.fromARGB(255, 137, 15, 153),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
