@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Puntajes {
-  final url = 'https://actively-golden-lab.ngrok-free.app/getPuntaje';
-  final urlguardar = 'https://actively-golden-lab.ngrok-free.app/registerPuntaje';
+class Progresohandler {
+  final url = 'https://actively-golden-lab.ngrok-free.app/getProgress';
+  final urlguardar = 'https://actively-golden-lab.ngrok-free.app/registerProgress';
   int _data = 0;
 
-  getPuntaje(String category, String id) async {
+  getProgress(String id, String category) async {
     var pet = Uri.parse(url);
     try{
       final response = await http.post(pet,
@@ -26,15 +26,20 @@ class Puntajes {
       debugPrint('$e');
     }
   }
-  
-  registerPuntaje(id, category, newscore) async {
+
+  registerProgress(String id, String category, int newlevel, int progreso) async {
+    debugPrint("PROGRESO: $progreso");
+    debugPrint("NEWLEVEL: $newlevel");
+    if(newlevel <= progreso){
+      newlevel = progreso;
+    }
     var pet = Uri.parse(urlguardar);
     try{
       final response = await http.post(pet,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({'id': id, 'category': category, 'newscore': newscore}),);
+      body: jsonEncode({'id': id, 'category': category, 'newlevel': newlevel}),);
       if(response.statusCode == 200){
         debugPrint('Respuesta obtenida: ${response.body}');
       }else{
@@ -46,7 +51,7 @@ class Puntajes {
     }
   }
 
-  int returnPuntaje() {
+  int returnProgress() {
       return _data;
   }
 }

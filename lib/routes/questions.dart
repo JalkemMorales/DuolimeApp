@@ -12,6 +12,7 @@ class CardListState extends State<Trivia> {
   List<Map<String, String>> _questions = []; // Lista de preguntas simulada
   late Map<String, String> args;
   late TriviaQuestions preguntas;
+  int correctAnswer = 0;
   int _currentQuestionIndex = 0;
   bool _isLastQuestion = false;
   bool _isLoading = true;
@@ -42,11 +43,9 @@ class CardListState extends State<Trivia> {
   Future<void> obtainData() async {
     debugPrint(_isDisposed.toString());
     if (!_isDisposed) {
-      if (!_isDisposed) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -63,6 +62,9 @@ class CardListState extends State<Trivia> {
     String correctAnswer = _questions[_currentQuestionIndex]['respuesta']!;
     if (userAnswer == correctAnswer) {
       debugPrint('Respuesta correcta');
+      setState(() {
+        this.correctAnswer += 1;
+      });
     } else {
       debugPrint('Respuesta incorrecta');
     }
@@ -87,17 +89,53 @@ class CardListState extends State<Trivia> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: _questions.isEmpty
-            ? const Center(
-                child:
-                    CircularProgressIndicator()) // Mostrar indicador de carga
+            ? const Center(child: CircularProgressIndicator()) // Mostrar indicador de carga
             : _isLastQuestion
-                ? const Center(
-                    child: Text(
-                      '¡Has completado el juego!',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        '¡Has completado el juego!',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).pushNamed('/finish', arguments: {
+                            'correct': correctAnswer,
+                            'category': "${args['category']}",
+                            'id': "${args['id']}",
+                            'level': "${args['level']}",
+                            'progress': "${args['progress']}",
+                          });
+                        },
+                        child: Card(
+                          elevation: 4,
+                          color: Colors.blueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            child: Center(
+                              child: Text(
+                                'Ver Resultados',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,

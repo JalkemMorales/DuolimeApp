@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class Loginhandler {
   final url = 'https://actively-golden-lab.ngrok-free.app/getProfile';
-
+  Map<String, dynamic> _data = {};
   Future<bool> loginProfile(String username, String password) async {
     var pet = Uri.parse(url);
     try {
@@ -16,6 +16,7 @@ class Loginhandler {
         body: jsonEncode({'username': username, 'password': password}),
       );
       if (response.statusCode == 200) {
+        _data = jsonDecode(response.body);
         debugPrint('Respuesta obtenida: ${response.body}');
         return true;
       } else {
@@ -27,5 +28,9 @@ class Loginhandler {
       debugPrint('Error: $e');
     }
     throw Error();
+  }
+
+  int getId() {
+    return int.parse(_data['\$']['id']);
   }
 }

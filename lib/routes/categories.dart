@@ -29,12 +29,14 @@ class CardListState extends State<Categories> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     if (_isLoading) {
       obtainData();
     }
   }
 
   Future<void> obtainData() async {
+
     debugPrint(_isDisposed.toString());
     if (!_isDisposed) {
       await categories.getCategories();
@@ -44,6 +46,7 @@ class CardListState extends State<Categories> {
         });
       }
     }
+    
   }
 
   @override
@@ -106,6 +109,7 @@ class CardListState extends State<Categories> {
                                       Navigator.pushNamed(
                                           context, '/levels', arguments: {
                                             'category': categories.getNombre(index),
+                                            'id': "${args['id']}",
                                           });
                                     },
                                     child: SizedBox(

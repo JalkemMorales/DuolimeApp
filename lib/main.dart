@@ -1,5 +1,6 @@
 import 'package:duolime/routes/categories.dart';
 import 'package:duolime/routes/centermenu.dart';
+import 'package:duolime/routes/gamefinished.dart';
 import 'package:duolime/routes/levels.dart';
 import 'package:duolime/routes/loginprofile.dart';
 import 'package:duolime/routes/menu.dart';
@@ -28,6 +29,7 @@ class MainApp extends StatelessWidget {
         '/categories': (context) => const Categories(),
         '/levels': (context) => const Levels(),
         '/trivia': (context) => const Trivia(),
+        '/finish': (context) => const EndGameScreen(),
       },
     );
   }

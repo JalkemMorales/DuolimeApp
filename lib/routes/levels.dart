@@ -1,3 +1,4 @@
+import 'package:duolime/handlers/progresohandler.dart';
 import 'package:duolime/handlers/puntajes.dart';
 import 'package:flutter/material.dart';
 
@@ -10,14 +11,17 @@ class Levels extends StatefulWidget {
 
 class CardListState extends State<Levels> {
   late Puntajes puntaje;
+  late Progresohandler progress;
   late Map<String, String> args;
   bool _isLoading = true;
   bool _isDisposed = false;
   int lastScore = 0;
+  int progreso = 0;
 
   @override
   void initState() {
     puntaje = Puntajes();
+    progress = Progresohandler();
     super.initState();
   }
 
@@ -40,9 +44,11 @@ class CardListState extends State<Levels> {
     debugPrint(_isDisposed.toString());
     if (!_isDisposed) {
       if (!_isDisposed) {
-        await puntaje.getPuntaje("${args['category']}");
+        await puntaje.getPuntaje("${args['category']}", "${args['id']}");
+        await progress.getProgress("${args['id']}", "${args['category']}");
         setState(() {
           _isLoading = false;
+          progreso = progress.returnProgress();
         });
       }
     }
@@ -113,7 +119,7 @@ class CardListState extends State<Levels> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("$currentCategory",style: const TextStyle(color: Colors.white),),
+        title: Text(currentCategory, style: const TextStyle(color: Colors.white)),
         backgroundColor: colors['button'], // Cambia el color del AppBar
       ),
       body: Container(
@@ -154,24 +160,29 @@ class CardListState extends State<Levels> {
                 ),
                 itemCount: 10, // Mostrar 10 tarjetas
                 itemBuilder: (context, index) {
+                  bool isUnlocked = index < progreso; // Nivel desbloqueado
+
                   return GestureDetector(
-                    onTap: () {
+                    onTap: isUnlocked ? () {
                       Navigator.pushNamed(context, '/trivia', arguments: {
                         'category': currentCategory,
+                        'id': "${args['id']}",
+                        'level': (index+1).toString(),
+                        'progress': progreso.toString(),
                       });
-                    },
+                    } : null, // Deshabilitar acción si no está desbloqueado
                     child: Card(
                       elevation: 4,
-                      color: colors['button'], // Color dinámico del botón
+                      color: isUnlocked ? colors['button'] : Colors.grey, // Botón desbloqueado o gris
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Center(
                         child: Text(
                           'Nivel ${index + 1}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
-                            color: Colors.white,
+                            color: isUnlocked ? Colors.white : Colors.black38, // Texto en gris si está bloqueado
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -186,5 +197,4 @@ class CardListState extends State<Levels> {
       ),
     );
   }
-
 }

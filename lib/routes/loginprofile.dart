@@ -126,7 +126,9 @@ class LoginScreenState extends State<LoginScreen> {
 
                           if (await login.loginProfile(usuario, contrasena)) {
                             if (context.mounted) {
-                              Navigator.of(context).pushNamed('/menu');
+                              Navigator.of(context).pushNamed('/menu', arguments: {
+                                'id': login.getId().toString(),
+                              });
                             }
                           } else {
                             // Mostrar el AlertDialog cuando las credenciales sean incorrectas
