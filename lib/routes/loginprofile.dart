@@ -34,13 +34,19 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blue[100], // Fondo degradado
-      appBar: AppBar(
-        title: const Text('Iniciar Sesión'),
-        elevation: 0,
+  return Scaffold(
+    body: Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color.fromARGB(255, 178, 133, 255), // Morado claro
+            Color.fromARGB(255, 104, 56, 150),  // Morado oscuro
+          ],
+        ),
       ),
-      body: Center(
+      child: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Card(
@@ -60,7 +66,7 @@ class LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.purple,
+                        color: Color.fromARGB(255, 104, 56, 150), // Morado oscuro
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -69,7 +75,7 @@ class LoginScreenState extends State<LoginScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.grey[700],
+                        color: Colors.grey[600],
                       ),
                     ),
                     const SizedBox(height: 40),
@@ -80,8 +86,13 @@ class LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         labelText: 'Usuario',
                         hintText: 'Introduce tu usuario',
+                        labelStyle: const TextStyle(color: Color.fromARGB(255, 104, 56, 150)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color.fromARGB(255, 104, 56, 150)),
                         ),
                         contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                       ),
@@ -100,8 +111,13 @@ class LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         labelText: 'Contraseña',
                         hintText: 'Introduce tu contraseña',
+                        labelStyle: const TextStyle(color: Color.fromARGB(255, 104, 56, 150)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color.fromARGB(255, 104, 56, 150)),
                         ),
                         contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                       ),
@@ -129,7 +145,6 @@ class LoginScreenState extends State<LoginScreen> {
                               Navigator.of(context).pushNamed('/menu');
                             }
                           } else {
-                            // Mostrar el AlertDialog cuando las credenciales sean incorrectas
                             _showInvalidCredentialsDialog();
                           }
 
@@ -138,7 +153,7 @@ class LoginScreenState extends State<LoginScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
+                        backgroundColor: const Color.fromARGB(255, 104, 56, 150), // Morado oscuro
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -149,6 +164,7 @@ class LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white, // Texto en blanco
                         ),
                       ),
                     ),
@@ -159,6 +175,8 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
