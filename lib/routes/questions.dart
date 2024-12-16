@@ -80,103 +80,187 @@ class CardListState extends State<Trivia> {
 
   @override
   Widget build(BuildContext context) {
+  // Definir el color del fondo y el appBar según la categoría
+    String currentCategory = args['category'] ?? 'Default';
+    late Color appBarColor;
+    late List<Color> gradientColors;
+
+    // Cambiar colores según la categoría
+    switch (currentCategory) {
+      case 'Banderas':
+        appBarColor = Colors.red;
+        gradientColors = [const Color.fromARGB(255, 255, 141, 133), const Color.fromARGB(255, 255, 194, 102)];
+        break;
+      case 'Series':
+        appBarColor = Colors.orange;
+        gradientColors = [const Color.fromARGB(255, 255, 194, 102), const Color.fromARGB(255, 252, 234, 156)];
+        break;
+      case 'Películas':
+        appBarColor = const Color.fromARGB(255, 255, 208, 0);
+        gradientColors = [const Color.fromARGB(255, 252, 234, 156), const Color.fromARGB(255, 191, 255, 172)];
+        break;
+      case 'Cultura pop':
+        appBarColor = const Color.fromARGB(255, 110, 197, 83);
+        gradientColors = [const Color.fromARGB(255, 191, 255, 172), const Color.fromARGB(255, 166, 255, 178)];
+        break;
+      case 'Historia':
+        appBarColor = const Color.fromARGB(255, 38, 180, 57);
+        gradientColors = [const Color.fromARGB(255, 166, 255, 178), const Color.fromARGB(255, 171, 231, 225)];
+        break;
+      case 'Arte':
+        appBarColor = Colors.teal;
+        gradientColors = [const Color.fromARGB(255, 154, 211, 205), const Color.fromARGB(255, 175, 219, 255)];
+        break;
+      case 'Geografía':
+        appBarColor = Colors.blue;
+        gradientColors = [const Color.fromARGB(255, 175, 219, 255), const Color.fromARGB(255, 141, 177, 207)];
+        break;
+      case 'Anime':
+        appBarColor = const Color.fromARGB(255, 11, 102, 177);
+        gradientColors = [const Color.fromARGB(255, 141, 177, 207), const Color.fromARGB(255, 216, 168, 248)];
+        break;
+      case 'Ciencia':
+        appBarColor = const Color.fromARGB(255, 192, 96, 255);
+        gradientColors = [const Color.fromARGB(255, 216, 168, 248), const Color.fromARGB(255, 218, 125, 235)];
+        break;
+      case 'Libros':
+        appBarColor = Colors.purple;
+        gradientColors = [const Color.fromARGB(255, 218, 125, 235), const Color.fromARGB(255, 255, 172, 227)];
+        break;
+      case 'Videojuegos':
+        appBarColor = const Color.fromARGB(255, 255, 128, 213);
+        gradientColors = [const Color.fromARGB(255, 255, 172, 227), const Color.fromARGB(255, 255, 129, 203)];
+        break;
+      case 'Música':
+        appBarColor = const Color.fromARGB(255, 255, 0, 149);
+        gradientColors = [const Color.fromARGB(255, 255, 129, 203), const Color.fromARGB(255, 247, 176, 154)];
+        break;
+      default:
+        appBarColor = Colors.purple;
+        gradientColors = [Colors.purple.shade700, Colors.purple.shade400];
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Trivia - Preguntas y Respuestas'),
+        title: Text(
+          'Trivia - Preguntas y Respuestas',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: appBarColor,
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: _questions.isEmpty
-            ? const Center(
-                child:
-                    CircularProgressIndicator()) // Mostrar indicador de carga
-            : _isLastQuestion
-                ? const Center(
-                    child: Text(
-                      '¡Has completado el juego!',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Pregunta ${_currentQuestionIndex + 1} de ${_questions.length}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        _questions[_currentQuestionIndex]['pregunta']!,
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: _questions.isEmpty
+              ? const Center(
+                  child: CircularProgressIndicator(), // Mostrar indicador de carga
+                )
+              : _isLastQuestion
+                  ? const Center(
+                      child: Text(
+                        '¡Has completado el juego!',
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(
-                          height: 60), // Espacio entre pregunta y botones
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => _checkAnswer('V'),
-                              child: Card(
-                                elevation: 4,
-                                color: Colors.greenAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                                  child: Center(
-                                    child: Text(
-                                      'Verdadero',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                              width: 16), // Separador entre las dos tarjetas
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => _checkAnswer('F'),
-                              child: Card(
-                                elevation: 4,
-                                color: Colors.redAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                                  child: Center(
-                                    child: Text(
-                                      'Falso',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                    )
+                  : Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ],
-                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Índice de la pregunta
+                            Text(
+                              'Pregunta ${_currentQuestionIndex + 1} de ${_questions.length}',
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 20),
+                            // Pregunta
+                            Text(
+                              _questions[_currentQuestionIndex]['pregunta']!,
+                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 60), // Espacio entre pregunta y botones
+
+                            // Respuestas
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () => _checkAnswer('V'),
+                                    child: Card(
+                                      elevation: 4,
+                                      color: Colors.greenAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                                        child: Center(
+                                          child: Text(
+                                            'Verdadero',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16), // Separador entre las dos tarjetas
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () => _checkAnswer('F'),
+                                    child: Card(
+                                      elevation: 4,
+                                      color: Colors.redAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                                        child: Center(
+                                          child: Text(
+                                            'Falso',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+        ),
       ),
     );
   }
+
+
 }
