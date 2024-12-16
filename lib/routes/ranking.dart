@@ -1,3 +1,4 @@
+import 'package:duolime/handlers/rankinghandler.dart';
 import 'package:flutter/material.dart';
 
 class Ranking extends StatefulWidget {
@@ -9,7 +10,7 @@ class Ranking extends StatefulWidget {
 
 class RankingScreen extends State<Ranking> {
   // Datos de ejemplo (puedes cambiarlos por los datos reales que quieras mostrar)
-  final List<Map<String, dynamic>> _rankingData = [
+  late List<Map<String, dynamic>> _rankingData = [
     {'id': 1, 'nombre': 'Jugador 1', 'puntaje': 1500},
     {'id': 2, 'nombre': 'Jugador 2', 'puntaje': 1200},
     {'id': 3, 'nombre': 'Jugador 3', 'puntaje': 900},
@@ -17,81 +18,137 @@ class RankingScreen extends State<Ranking> {
     {'id': 5, 'nombre': 'Jugador 5', 'puntaje': 700},
   ];
 
+  late RankingHandler rank;
+  late Map<String, String> args;
+  bool _isLoading = true;
+  bool _isDisposed = false;
+
+  @override
+  void initState() {
+    rank = RankingHandler();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _isDisposed = true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isLoading) {
+      obtainData();
+    }
+  }
+
+  Future<void> obtainData() async {
+    debugPrint(_isDisposed.toString());
+    if (!_isDisposed) {
+      await rank.getRanking();
+      if (!_isDisposed) {
+        setState(() {
+          _rankingData = rank.getRankingData();
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ranking'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              'Tabla de Ranking',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.purple,
-              ),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.purple, Colors.blue],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            const SizedBox(height: 20),
-
-            // Tabla para mostrar el ranking
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Table(
-                  border: TableBorder.all(color: Colors.black),
-                  columnWidths: const {
-                    0: FixedColumnWidth(50), // Columna ID
-                    1: FlexColumnWidth(),    // Columna Nombre
-                    2: FixedColumnWidth(80), // Columna Puntaje
-                  },
-                  children: [
-                    // Encabezado de la tabla
-                    const TableRow(
-                      decoration: BoxDecoration(color: Colors.grey),
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('ID', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Nombre', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Puntaje', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-
-                    // Desglose dinámico de los datos
-                    for (var jugador in _rankingData)
-                      TableRow(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(jugador['id'].toString(), textAlign: TextAlign.center),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(jugador['nombre'], textAlign: TextAlign.center),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(jugador['puntaje'].toString(), textAlign: TextAlign.center),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
+      ),
+      body: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blueAccent, Colors.purpleAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const Text(
+                    'Ranking de Jugadores',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+          
+                  // Lista de ranking con tarjetas
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _rankingData.length,
+                      itemBuilder: (context, index) {
+                        var jugador = _rankingData[index];
+                        return Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              child: Text(
+                                jugador['id'].toString(),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            title: Text(
+                              jugador['nombre'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.purple,
+                                fontSize: 18,
+                              ),
+                            ),
+                            trailing: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Colors.purpleAccent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                '${jugador['puntaje']} Pts',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
