@@ -82,7 +82,7 @@ class CardListState extends State<Trivia> {
 
   @override
   Widget build(BuildContext context) {
-  // Definir el color del fondo y el appBar según la categoría
+    // Definir el color del fondo y el appBar según la categoría
     String currentCategory = args['category'] ?? 'Default';
     late Color appBarColor;
     late List<Color> gradientColors;
@@ -144,139 +144,164 @@ class CardListState extends State<Trivia> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Trivia - Preguntas y Respuestas'),
+        title: const Text('Trivia - Preguntas y Respuestas', style: TextStyle(color: Colors.white),),
+        backgroundColor: appBarColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: _questions.isEmpty
-            ? const Center(child: CircularProgressIndicator()) // Mostrar indicador de carga
-            : _isLastQuestion
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        '¡Has completado el juego!',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: _questions.isEmpty
+              ? const Center(child: CircularProgressIndicator()) // Mostrar indicador de carga
+              : _isLastQuestion
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          '¡Has completado el juego!',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).popAndPushNamed('/finish', arguments: {
-                            'correct': correctAnswer,
-                            'category': "${args['category']}",
-                            'id': "${args['id']}",
-                            'level': "${args['level']}",
-                            'progress': "${args['progress']}",
-                          });
-                        },
-                        child: Card(
-                          elevation: 4,
-                          color: Colors.blueAccent,
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).popAndPushNamed('/finish', arguments: {
+                              'correct': correctAnswer,
+                              'category': "${args['category']}",
+                              'id': "${args['id']}",
+                              'level': "${args['level']}",
+                              'progress': "${args['progress']}",
+                            });
+                          },
+                          child: Card(
+                            elevation: 4,
+                            color: appBarColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+                              child: Center(
+                                child: Text(
+                                  'Ver Resultados',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Pregunta ${_currentQuestionIndex + 1} de ${_questions.length}',
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 20),
+                        // Tarjeta con fondo blanco para la pregunta y respuestas
+                        Card(
+                          elevation: 8,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            child: Center(
-                              child: Text(
-                                'Ver Resultados',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                          color: Colors.white, // Fondo blanco para la tarjeta
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  _questions[_currentQuestionIndex]['pregunta']!,
+                                  style: const TextStyle(
+                                      fontSize: 24, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
                                 ),
-                              ),
+                                const SizedBox(height: 60), // Espacio entre pregunta y botones
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () => _checkAnswer('V'),
+                                        child: Card(
+                                          elevation: 4,
+                                          color: Colors.greenAccent,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                                            child: Center(
+                                              child: Text(
+                                                'Verdadero',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                        width: 16), // Separador entre las dos tarjetas
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () => _checkAnswer('F'),
+                                        child: Card(
+                                          elevation: 4,
+                                          color: Colors.redAccent,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                                            child: Center(
+                                              child: Text(
+                                                'Falso',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Pregunta ${_currentQuestionIndex + 1} de ${_questions.length}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        _questions[_currentQuestionIndex]['pregunta']!,
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                          height: 60), // Espacio entre pregunta y botones
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => _checkAnswer('V'),
-                              child: Card(
-                                elevation: 4,
-                                color: Colors.greenAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                                  child: Center(
-                                    child: Text(
-                                      'Verdadero',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                              width: 16), // Separador entre las dos tarjetas
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => _checkAnswer('F'),
-                              child: Card(
-                                elevation: 4,
-                                color: Colors.redAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                                  child: Center(
-                                    child: Text(
-                                      'Falso',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+        ),
       ),
     );
   }
+
 
 
 }

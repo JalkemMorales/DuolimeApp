@@ -54,90 +54,115 @@ class EndGameState extends State<EndGameScreen> {
       appBar: AppBar(
         title: const Text('Fin del Juego'),
         automaticallyImplyLeading: false, // Deshabilita el botón de retroceso
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color.fromARGB(255, 104, 56, 150),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              '¡Juego Terminado!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-                color: Colors.purple,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromARGB(255, 178, 133, 255), // Morado claro
+              Color.fromARGB(255, 104, 56, 150),    // Morado oscuro
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
               ),
-            ),
-            const SizedBox(height: 30),
+              color: Colors.white, // Fondo blanco para toda la tarjeta
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      '¡Juego Terminado!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 104, 56, 150),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
 
-            // Gráfico Circular
-            SizedBox(
-              height: 200,
-              child: PieChart(
-                PieChartData(
-                  sections: _buildPieChartSections(),
-                  centerSpaceRadius: 50,
-                  sectionsSpace: 2,
-                ),
-              ),
-            ),
+                    // Gráfico Circular
+                    SizedBox(
+                      height: 200,
+                      child: PieChart(
+                        PieChartData(
+                          sections: _buildPieChartSections(),
+                          centerSpaceRadius: 50,
+                          sectionsSpace: 2,
+                        ),
+                      ),
+                    ),
 
-            const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-            // Texto de resultados
-            Text(
-              'Respuestas correctas: $correctAnswers / $totalQuestions',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 40),
+                    // Texto de resultados
+                    Text(
+                      'Respuestas correctas: $correctAnswers / $totalQuestions',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
 
-            // Botón tipo Card para volver al menú principal
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).popAndPushNamed('/menu', arguments: {
-                  'id': "${args['id']}",
-                });
-              },
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                color: Colors.purple,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Icon(Icons.home, size: 40, color: Colors.white),
-                        SizedBox(height: 10),
-                        Text(
-                          'Volver al Menú Principal',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    // Botón tipo Card para volver al menú principal
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).popAndPushNamed('/menu', arguments: {
+                          'id': "${args['id']}",
+                        });
+                      },
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        color: const Color.fromARGB(255, 104, 56, 150),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Icon(Icons.home, size: 40, color: Colors.white),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Volver al Menú Principal',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
+
 
   // Función que construye las secciones del gráfico circular
   List<PieChartSectionData> _buildPieChartSections() {
