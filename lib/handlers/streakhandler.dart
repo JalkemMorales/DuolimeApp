@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Streakhandler {
-  final url = 'https://actively-golden-lab.ngrok-free.app/updateRacha';
+  final url = 'https://liked-walleye-trusting.ngrok-free.app/updateRacha';
   int _data = 0;
 
   getStreak(String id) async {

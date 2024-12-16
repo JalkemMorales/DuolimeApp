@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Listcategories {
-  final url = 'https://actively-golden-lab.ngrok-free.app/getCategories';
+  final url = 'https://liked-walleye-trusting.ngrok-free.app/getCategories';
   List<dynamic> _data = [];
 
   getCategories() async{

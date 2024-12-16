@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Usernamehandler {
-  final url = 'https://actively-golden-lab.ngrok-free.app/getUsername';
+  final url = 'https://liked-walleye-trusting.ngrok-free.app/getUsername';
   String _data = '';
 
   Future<String> getUsername(String id) async {

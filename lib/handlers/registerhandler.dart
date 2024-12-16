@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Registerhandler {
-  final url = 'https://actively-golden-lab.ngrok-free.app/registerProfile';
+  final url = 'https://liked-walleye-trusting.ngrok-free.app/registerProfile';
   final urlcorreo =
-      'https://actively-golden-lab.ngrok-free.app/enviarCorreo';
+      'https://liked-walleye-trusting.ngrok-free.app/enviarCorreo';
 
   String generateRandomPassword({int length = 8}) {
     const String chars =

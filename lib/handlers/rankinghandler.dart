@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RankingHandler {
-  final String url = 'https://actively-golden-lab.ngrok-free.app/getRanking';
+  final String url = 'https://liked-walleye-trusting.ngrok-free.app/getRanking';
   List<Map<String, dynamic>> _rankingData = [];
   Usernamehandler username = Usernamehandler();
 

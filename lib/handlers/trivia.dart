@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class TriviaQuestions {
-  final url = 'https://actively-golden-lab.ngrok-free.app/obtenerPregunta';
+  final url = 'https://liked-walleye-trusting.ngrok-free.app/obtenerPregunta';
   List<dynamic> _data = [];
 
   fetchQuestions(String category) async {

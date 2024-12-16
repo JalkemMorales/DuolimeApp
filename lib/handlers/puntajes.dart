@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Puntajes {
-  final url = 'https://actively-golden-lab.ngrok-free.app/getPuntaje';
-  final urlguardar = 'https://actively-golden-lab.ngrok-free.app/registerPuntaje';
+  final url = 'https://liked-walleye-trusting.ngrok-free.app/getPuntaje';
+  final urlguardar = 'https://liked-walleye-trusting.ngrok-free.app/registerPuntaje';
   int _data = 0;
 
   getPuntaje(String category, String id) async {

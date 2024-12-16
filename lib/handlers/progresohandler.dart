@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Progresohandler {
-  final url = 'https://actively-golden-lab.ngrok-free.app/getProgress';
-  final urlguardar = 'https://actively-golden-lab.ngrok-free.app/registerProgress';
+  final url = 'https://liked-walleye-trusting.ngrok-free.app/getProgress';
+  final urlguardar = 'https://liked-walleye-trusting.ngrok-free.app/registerProgress';
   int _data = 0;
 
   getProgress(String id, String category) async {

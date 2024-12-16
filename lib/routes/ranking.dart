@@ -106,7 +106,7 @@ class RankingScreen extends State<Ranking> {
                   // Lista de ranking con tarjetas
                   Expanded(
                     child: ListView.builder(
-                      itemCount: _rankingData.length,
+                      itemCount: 5,
                       itemBuilder: (context, index) {
                         var jugador = _rankingData[index];
                         return Card(
