@@ -58,8 +58,7 @@ class CardListState extends State<MenuPrincipal> {
             // Card para Iniciar sesión
             GestureDetector(
               onTap: () {
-                // Acción para iniciar sesión
-                debugPrint("Ir a la pantalla de inicio de sesión");
+                Navigator.of(context).pushNamed('/login');
               },
               child: Card(
                 elevation: 8,
