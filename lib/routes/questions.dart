@@ -166,7 +166,7 @@ class CardListState extends State<Trivia> {
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: (){
-                          Navigator.of(context).pushNamed('/finish', arguments: {
+                          Navigator.of(context).popAndPushNamed('/finish', arguments: {
                             'correct': correctAnswer,
                             'category': "${args['category']}",
                             'id': "${args['id']}",

@@ -102,7 +102,7 @@ class EndGameState extends State<EndGameScreen> {
             // Botón tipo Card para volver al menú principal
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushNamed('/menu', arguments: {
+                Navigator.of(context).popAndPushNamed('/menu', arguments: {
                   'id': "${args['id']}",
                 });
               },
